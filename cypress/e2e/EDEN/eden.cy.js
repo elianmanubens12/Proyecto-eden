@@ -1,14 +1,21 @@
 /// <reference types="cypress" />
+//Forma del PageObject tipo 1
 import EdenHome from "../../Page/edenHome";
-import EdenHeader from "../../Page/edenHeader";
-import EdenEvent from "../../Page/edenEvent";
 const edenHome = new EdenHome();
+import EdenHeader from "../../Page/edenHeader";
 const edenHeader = new EdenHeader();
+import EdenEvent from "../../Page/edenEvent";
 const edenEvent = new EdenEvent();
+//Forma del PageObject Tipo 2
+const edenSalas = require("../../Page/edenSalas");
+//Import del utils
+const utils = require("../../Page/utils");
 
 describe("Test sobre la página de EDEN ENTRADAS", () => {
+  beforeEach(() => {
+    cy.openWeb();
+  });
   it("Verificar subtitulos", () => {
-    cy.visit("https://www.edenentradas.com.ar/");
     edenHome.getSubTitles().first().should("contain.text", "BUSCAR EVENTO");
     edenHome
       .getSubTitles()
@@ -16,9 +23,7 @@ describe("Test sobre la página de EDEN ENTRADAS", () => {
       .should("contain.text", "CALENDARIO DE EVENTOS");
   });
 
-  it("Verificar Menu", () => {
-    cy.visit("https://www.edenentradas.com.ar/");
-
+  it("Verificar Menu", { tags: "@regression" }, () => {
     const menuBtn = [
       "HOME",
       "TODOS",
@@ -34,17 +39,18 @@ describe("Test sobre la página de EDEN ENTRADAS", () => {
     });
   });
 
-  it("Verificar pagina de recitales", () => {
-    const newUrl = "https://www.edenentradas.com.ar/sitio/contenido/recitales";
-
-    cy.visit("https://www.edenentradas.com.ar/");
-    edenHeader.getMenuButtons().contains("RECITALES").click();
-    cy.url().should("eq", newUrl);
-    cy.url().should("include", "/sitio/contenido/recitales");
-  });
+  it(
+    "Verificar pagina de recitales",
+    { tags: ["@regression", "@smoke"] },
+    () => {
+      const newUrl = `${Cypress.config().baseUrl}sitio/contenido/recitales`;
+      edenHeader.getMenuButtons().contains("RECITALES").click();
+      cy.url().should("eq", newUrl);
+      cy.url().should("include", "/sitio/contenido/recitales");
+    }
+  );
 
   it("Logo", () => {
-    cy.visit("https://www.edenentradas.com.ar/");
     edenHeader
       .getImgLogo()
       .should(
@@ -53,22 +59,38 @@ describe("Test sobre la página de EDEN ENTRADAS", () => {
         "https://static.edenentradas.com.ar/sitio/images/logo.gif"
       );
     edenHeader.getImgLogo().should("have.attr", "alt", "EdenEntradas");
-    edenHeader.getImgLogo().should("be.visible")
-      .and("have.prop", "naturalHeight").and("be.greaterThan", 0);
+    edenHeader
+      .getImgLogo()
+      .should("be.visible")
+      .and("have.prop", "naturalHeight")
+      .and("be.greaterThan", 0);
   });
 
   it("Buscador", () => {
-    cy.visit("https://www.edenentradas.com.ar/");
     edenHeader.getSearchInput().type("Queen");
     edenHeader.getSearchSuggestion().contains("Queen").click();
-    edenEvent.getEventTitle().should("have.text", 'Experiencia Queen "Champions of the World Tour 23" ')
+    edenEvent
+      .getEventTitle()
+      .should(
+        "have.text",
+        'Experiencia Queen "Champions of the World Tour 23" '
+      );
   });
 
-  it.only("Calendario", () => {
-    cy.visit("https://www.edenentradas.com.ar/");
+  it("Calendario", () => {
     const nombresMeses = [
-      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre",
     ];
     const fechaActual = new Date();
     const mesActual = fechaActual.getMonth();
@@ -76,17 +98,92 @@ describe("Test sobre la página de EDEN ENTRADAS", () => {
     const nombreMesActual = nombresMeses[mesActual];
     const diaActual = fechaActual.getDate();
 
-    cy.log(nombreMesActual); // Por ejemplo, "julio"
+    cy.log(nombreMesActual); // Por ejemplo, "Agosto"
     cy.log(anioActual); // Por ejemplo, "2023"
-    cy.log(diaActual); // Por ejemplo, "31"
+    cy.log(diaActual); // Por ejemplo, "4"
     edenHome.getCalendarTitle().should("contain.text", nombreMesActual);
     edenHome.getCalendarTitle().should("contain.text", anioActual);
-    
-    edenHome.getCalendar().find('td').each((cuadradoDia, $inx) => {
-      if($inx < diaActual){
-        cy.wrap(cuadradoDia).should("have.class", "ui-datepicker-unselectable ui-state-disabled")
-      }
+
+    edenHome
+      .getCalendar()
+      .find("td")
+      .each((cuadradoDia, $inx) => {
+        if ($inx < diaActual) {
+          cy.wrap(cuadradoDia).should(
+            "have.class",
+            "ui-datepicker-unselectable ui-state-disabled"
+          );
+          cy.log(`El día ${$inx} es no seleccionable`);
+        }
+      });
+  });
+
+  it.only("Calendario 2", () => {
+    const [dia, mes, anio] = utils.getCompleteDate();
+
+    edenHome.getCalendarTitle().should("contain.text", mes);
+    edenHome.getCalendarTitle().should("contain.text", anio);
+
+    edenHome
+      .getCalendar()
+      .find("td")
+      .each((cuadradoDia, $inx) => {
+        if ($inx < dia) {
+          cy.wrap(cuadradoDia).should(
+            "have.class",
+            "ui-datepicker-unselectable ui-state-disabled"
+          );
+          cy.log(`El día ${$inx} es no seleccionable`);
+        }
+      });
+  });
+
+  it("Buscador Nuevo", () => {
+    edenHeader.getSearchInput().type("Experiencia");
+  });
+
+  it("Verificar pagina de Salas", () => {
+    const arrSalas = [
+      "Plaza de La Música",
+      "Sala del Rey",
+      "Refugio Guernica",
+      "Captain Blue XL",
+      "Teatro Cultural Cañada",
+      "Sala Agustín Tosco – Luz y Fuerza - Bº Centro",
+      "Sala de Las Américas",
+      "Studio Theater",
+      "Casa Babylon",
+    ];
+    edenHeader.getMenuButtons().contains("SALAS").click();
+
+    //Validación ITERANDO en ARRAY
+    arrSalas.forEach((titleInArray, $inx) => {
+      cy.log(`Itero en el titulo ${$inx}: ${titleInArray}`);
+      edenSalas.getSalasBlock().eq($inx).should("be.visible");
+      edenSalas.getSalasTitle().eq($inx).should("have.text", titleInArray);
     });
-    
+
+    //Validación ITERANDO en ELEMENTOS
+    edenSalas.getSalasBlock().each((block, $inx) => {
+      cy.log(`Itero en el elemento ${$inx}: ${block}`);
+      cy.wrap(block).should("be.visible");
+      edenSalas.getSalasTitle().eq($inx).should("have.text", arrSalas[$inx]);
+    });
+  });
+
+  it("Verificar salas completo", () => {
+    edenHeader.getMenuButtons().contains("SALAS").click();
+
+    cy.fixture(`salas.json`).then((file) => {
+      //Validación ITERANDO en ELEMENTOS
+      file.forEach((salaData, $inx) => {
+        edenSalas.getSalasBlock().eq($inx).should("be.visible");
+        edenSalas.getSalasTitle().eq($inx).should("have.text", salaData.title);
+        edenSalas
+          .getSalasPuntoDeVenta()
+          .eq($inx)
+          .should("contain.text", salaData.address);
+      });
+    });
   });
 });
