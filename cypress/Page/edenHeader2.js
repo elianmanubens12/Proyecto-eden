@@ -3,9 +3,9 @@ class EdenHeader2 {
       return cy.get("#navbar a");
     }
   
-    getImgLogo() {
-      return cy.get("#header-logo");
-    }
+    //getImgLogo() {
+      //return cy.get("#header-logo");
+    //}
   }
   
   export default new EdenHeader2();
