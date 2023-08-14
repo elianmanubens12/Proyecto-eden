@@ -33,7 +33,7 @@ describe("Test sobre la página de EDEN ENTRADAS", () => {
 
   it("Verificar pagina de recitales", () => {
     cy.visit("/");
-    edenHeader2.getMenuButtons().eq(3).click();
+    edenHeader2.getMenuButtons().eq(4).click();
   });
 
   it("Verificar pagina de recitales", () => {
