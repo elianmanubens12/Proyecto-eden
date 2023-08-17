@@ -1,5 +1,6 @@
-const { default: claroHeader } = require("../../Page/claroHeader");
-const claroHeader2 = require("../../Page/claroHeader2");
+import ClaroHeader2 from "../../Page/claro/claroHeader2";
+const { default: claroHeader } = require("../../Page/claro/claroHeader");
+const claroHeader2 = require("../../Page/claro/claroHeader2");
 
 //esta comentado porq estoy probando
 
@@ -29,9 +30,12 @@ it("Verificar Menu", { tags: "@regresion" }, () => {
     claroHeader2.getMenuButtons().eq(0).click();
   });
 
-  it.skip("Verificar pagina de celulares", () => {
+
+  
+  it.only("Verificar pagina de celulares", () => {
     cy.visit("https://tienda.claro.com.ar/");
-    const newUrl = `${Cypress.config().baseUrl}/plp/equipos`;
+    cy.viewport(1200,900)
+    const newUrl = "https://tienda.claro.com.ar/plp/equipos";
     claroHeader2.getMenuButtons().contains("Celulares").click();
     cy.url().should("eq", newUrl);
     cy.url().should("include", "/plp/equipos");
