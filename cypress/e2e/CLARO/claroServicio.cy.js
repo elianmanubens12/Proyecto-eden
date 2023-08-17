@@ -1,14 +1,14 @@
 /// <reference types="cypress" />
 
 describe("Test de SERVICIOS", () => {
-    it("Verificar servicio de Celular Motorola", () => {
-      cy.request(
-        "GET",
-        "https://tienda.claro.com.ar/_next/data/i5erFDIn5zrlPzYMxhxi4/pdp/equipos/moto-g42-128gb.json?color=&index=pdp&index=equipos&index=moto-g42-128gb"
-      ).then((response) => {
-        cy.log(JSON.stringify(response));
-        expect(response.status).to.eq(200);
-      cy.log("el servicio de celular motorola -200");
+  it("Verificar servicio Celular Motorola - 200", () => {
+    cy.request(
+      "GET",
+      "https://tienda.claro.com.ar/pdp/equipos/moto-e22-32gb?color=negro"
+    ).then((response) => {
+      cy.log(JSON.stringify(response));
+      expect(response.status).to.eq(200);
+      cy.log("el servivio de celular motorola - 200")
     });
   });
   it("Verificar servicio de Logo Claro", () => {
@@ -18,8 +18,7 @@ describe("Test de SERVICIOS", () => {
     ).then((response) => {
       cy.log(JSON.stringify(response));
       expect(response.status).to.eq(200);
-    cy.log("el servicio de celular motorola paso correctamente");
-    cy.log("el servicio es de la pagina de Claro, porque ClaroTienda -200");
+    cy.log("el servicio de logo paso correctamente");
   });
  });
 
@@ -54,19 +53,15 @@ describe("Test de SERVICIOS", () => {
     cy.log("el servicio de lanzamiento del dispositivo Motorola -200");
   });
  });
- it("Verificar servicio de Index TiendaClaro", () => {
+ it("Verificar servicio de Catalogo TiendaClaro", () => {
     cy.request(
       "GET",
-      "https://tienda.claro.com.ar/_next/data/i5erFDIn5zrlPzYMxhxi4/index.json"
+      "https://tienda.claro.com.ar/plp/catalogo"
     ).then((response) => {
       cy.log(JSON.stringify(response));
       expect(response.status).to.eq(200);
-    cy.log("el servicio de Index de la pagina TiendaClaro -200");
+    cy.log("el servicio de catalogo -200");
   });
- });
-
 });
 
-
-
-
+});
