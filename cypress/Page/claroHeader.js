@@ -2,10 +2,10 @@
 
 class claroHeaderLocators {
     constructor() {
-      this.menuButtons = "#navbar a";
-      this.imgLogo = "#header-logo";
-      this.searchInput = "#espectaculoList";
-      this.searchSuggestion = "li.ui-menu-item";
+      this.menuButtons = "#main_menu_tienda.MenuTienda_nav__jOsM2";
+      //this.imgLogo = "#header-logo";
+      this.searchInput = ".MenuTienda_btn_search_mobile__rUb9O > .MuiSvgIcon-fontSizeMedium.MuiSvgIcon-root.css-vubbuv";
+      //this.searchSuggestion = "li.ui-menu-item";
     }
   }
   
