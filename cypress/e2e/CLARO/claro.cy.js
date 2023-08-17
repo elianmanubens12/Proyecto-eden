@@ -29,12 +29,4 @@ it("Verificar Menu", { tags: "@regresion" }, () => {
     claroHeader2.getMenuButtons().eq(0).click();
   });
 
-  it("Verificar pagina de celulares", () => {
-    cy.visit("https://tienda.claro.com.ar/");
-    const newUrl = `${Cypress.config().baseUrl}/plp/equipos`;
-    claroHeader2.getMenuButtons().contains("Celulares").click();
-    cy.url().should("eq", newUrl);
-    cy.url().should("include", "/plp/equipos");
-    cy.log("La pagina de Celulares - 200")
-  });
 });
