@@ -32,7 +32,7 @@ it("Verificar Menu", { tags: "@regresion" }, () => {
 
 
   
-  it.only("Verificar pagina de celulares", () => {
+  it("Verificar pagina de celulares", () => {
     cy.visit("https://tienda.claro.com.ar/");
     cy.viewport(1200,900)
     const newUrl = "https://tienda.claro.com.ar/plp/equipos";
