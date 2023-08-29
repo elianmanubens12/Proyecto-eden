@@ -25,7 +25,7 @@ it("Verificar Menu", { tags: "@regresion" }, () => {
     });
   });
 
-  it("Verificar pagina de Accesorios", () => {
+  it.only("Verificar pagina de Accesorios", () => {
     cy.visit("https://tienda.claro.com.ar/");
     claroHeader2.getMenuButtons().eq(0).click();
   });
