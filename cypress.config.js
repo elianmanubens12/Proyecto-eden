@@ -1,7 +1,7 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
-  "reporter": "mochawesome",
+  reporter: "cypress-mochawesome-reporter",
   reporterOptions: {
     charts: true,
     reportPageTitle: "Reporte Personalizable",
@@ -9,9 +9,8 @@ module.exports = defineConfig({
     inlineAssets: true,
     saveAllAttempts: false,
   },
-  
   env: {
-    //npenv: { grepFilterSpecs: true, grepOmitFiltered: true },
+    env: { grepFilterSpecs: true, grepOmitFiltered: true },
     viewportmobile: {
       device: "iphone-xr",
     },
@@ -19,16 +18,17 @@ module.exports = defineConfig({
       device: "macbook-16",
     },
   },
-
   e2e: {
     baseUrl: "https://www.edenentradas.com.ar/",
     setupNodeEvents(on, config) {
-       //implement node event listeners here
+      // implement node event listeners here
       require("cypress-mochawesome-reporter/plugin")(on);
       require("@bahmutov/cy-grep/src/plugin")(config);
       // IMPORTANT: return the config object
+      require("cypress-image-diff-js/dist/plugin")(on, config);
+      return getCompareSnapshotsPlugin(on, config);
       return config;
     },
   },
-  //video: false,
+  video: false,
 });
