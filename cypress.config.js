@@ -26,7 +26,6 @@ module.exports = defineConfig({
       require("@bahmutov/cy-grep/src/plugin")(config);
       // IMPORTANT: return the config object
       require("cypress-image-diff-js/dist/plugin")(on, config);
-      return getCompareSnapshotsPlugin(on, config);
       return config;
     },
   },

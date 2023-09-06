@@ -207,7 +207,7 @@ describe("Tests sobre la página de YVYTU", () => {
         "rgb(34, 153, 84) none repeat scroll 0% 0% / auto padding-box border-box"
       );
   });
-  it.only("Visual Tetsing de Yvytu usando Snapshoot", () => {
+  it("Visual Tetsing de Yvytu usando Snapshoot", () => {
     cy.compareSnapshot("home-page");
   });
 
